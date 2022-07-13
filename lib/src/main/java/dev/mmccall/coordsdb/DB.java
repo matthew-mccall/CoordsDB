@@ -1,5 +1,6 @@
 package dev.mmccall.coordsdb;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,29 +13,24 @@ import java.util.HashMap;
 import org.bukkit.Location;
 
 public class DB {
-    private static HashMap<String, HashMap<String, Coord>> db;
+    private static HashTable<String, String, Coord> db;
+    private static final String SAVEFILE = "coords.db";
 
     public static HashMap<String, Coord> getEntries(String username) {
-        HashMap<String, Coord> userTable = db.get(username);
-
-        if (userTable == null) {
-            db.put(username, new HashMap<String, Coord>());
-        }
-
-        return db.get(username);
+        return db.getOrCreateCol(username);
     }
 
-    public static Coord getEntry(String username, String label) {
-        return getEntries(username).get(label);
+    public static Coord getEntry(Entry entry) {
+        return db.get(entry.getUsername(), entry.getLabel());
     }
 
-    public static boolean setEntry(String username, String label, Location location) {
-        getEntries(username).put(label, new Coord(location));
+    public static boolean setEntry(Entry entry, Location location) {
+        db.set(entry.getUsername(), entry.getLabel(), new Coord(location));
         return save();
     }
 
-    public static boolean delEntry(String username, String label) {
-        if (getEntries(username).remove(label) != null) {
+    public static boolean delEntry(Entry entry) {
+        if (getEntries(entry.getUsername()).remove(entry.getLabel()) != null) {
             return save();
         }
 
@@ -43,32 +39,35 @@ public class DB {
 
     public static void load() {
         try {
-            File descriptor = new File("coords.db");
-            descriptor.createNewFile();
+            File descriptor = new File(SAVEFILE);
 
-            FileInputStream file = new FileInputStream(descriptor);
-            ObjectInputStream in = new ObjectInputStream(file);
+            if (!descriptor.createNewFile() || (descriptor.length() == 0)) {
+                FileInputStream file = new FileInputStream(descriptor);
+                ObjectInputStream in = new ObjectInputStream(file);
 
-            db = (HashMap<String, HashMap<String, Coord>>) in.readObject();
+                db = (HashTable<String, String, Coord>) in.readObject();
+                in.close();
+            }
 
             if (db == null) {
-                db = new HashMap<String, HashMap<String, Coord>>();
+                db = new HashTable<String, String, Coord>();
             }
+
         } catch (FileNotFoundException e) {
-            db = new HashMap<String, HashMap<String, Coord>>();
+            db = new HashTable<String, String, Coord>();
             e.printStackTrace();
         } catch (IOException e) {
-            db = new HashMap<String, HashMap<String, Coord>>();
+            db = new HashTable<String, String, Coord>();
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            db = new HashMap<String, HashMap<String, Coord>>();
+            db = new HashTable<String, String, Coord>();
             e.printStackTrace();
         }
     }
 
     private static boolean save() {
         try {
-            FileOutputStream file = new FileOutputStream("coords.db");
+            FileOutputStream file = new FileOutputStream(SAVEFILE);
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             out.writeObject(db);

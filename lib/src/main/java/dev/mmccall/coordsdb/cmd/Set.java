@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import dev.mmccall.coordsdb.DB;
+import dev.mmccall.coordsdb.Entry;
 
 public class Set extends Command {
 
@@ -30,6 +31,7 @@ public class Set extends Command {
         String username;
         String label;
         Location location;
+        Entry entry;
 
         username = sender.getName();
 
@@ -39,17 +41,18 @@ public class Set extends Command {
             label = String.valueOf(DB.getEntries(username).size());
         }
 
+        entry = new Entry(username, label);
         location = sender.getServer().getPlayer(username).getLocation();
 
-        if (DB.setEntry(username, label, location)) {
+        if (DB.setEntry(new Entry(username, label), location)) {
             sender.sendMessage(MessageFormat.format(
-                    "[CoordsDB] Successfully registered coordinate [{0,number}, {1,number}, {2,number}] with label {3}:{4}!",
-                    location.getBlockX(), location.getBlockY(), location.getBlockZ(), username, label));
+                    "[CoordsDB] Successfully registered coordinate [{0,number}, {1,number}, {2,number}] with label {3}!",
+                    location.getBlockX(), location.getBlockY(), location.getBlockZ(), entry));
             return true;
         } else {
             sender.sendMessage(MessageFormat.format(
-                    "[CoordsDB] Failed to register coordinate [{0,number}, {1,number}, {2,number}] with label {3}:{4}!",
-                    location.getBlockX(), location.getBlockY(), location.getBlockZ(), username, label));
+                    "[CoordsDB] Failed to register coordinate [{0,number}, {1,number}, {2,number}] with label {3}!",
+                    location.getBlockX(), location.getBlockY(), location.getBlockZ(), entry));
             return false;
         }
     }

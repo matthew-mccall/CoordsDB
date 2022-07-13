@@ -2,13 +2,14 @@ package dev.mmccall.coordsdb.cmd;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import dev.mmccall.coordsdb.Coord;
 import dev.mmccall.coordsdb.DB;
+import dev.mmccall.coordsdb.Entry;
 
 public class Del extends Command {
 
@@ -26,26 +27,32 @@ public class Del extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        String username;
-        String label;
-
-        username = sender.getName();
-
         if (args.length < 1) {
             sender.sendMessage("[CoordsDB] label not specified! Usage: " + getUsage());
             return false;
         }
 
-        label = args[0];
+        Optional<Entry> optionalEntry = Entry.fromString(args[0]);
+        Entry entry;
 
-        if (DB.delEntry(username, label)) {
-            sender.sendMessage(MessageFormat.format("[CoordsDB] Deleted {0}:{1}.", username, label));
+        if (optionalEntry.isPresent()) {
+            entry = optionalEntry.get();
+        } else if (Entry.isUsernameOrLabel(args[0])) {
+            entry = new Entry(sender.getName(), args[0]);
         } else {
-            sender.sendMessage(
-                    MessageFormat.format("[CoordsDB] Coordinate labelled {0}:{1} does not exist!", username, label));
+            sender.sendMessage("[CoordsDB] invalid label! Usage: " + getUsage());
+            return false;
         }
 
-        return true;
+        if (DB.delEntry(entry)) {
+            sender.sendMessage(MessageFormat.format("[CoordsDB] Deleted {0}.", entry));
+            return true;
+        }
+
+        sender.sendMessage(
+                MessageFormat.format("[CoordsDB] Coordinate labelled {0} does not exist!", entry));
+
+        return false;
     }
 
 }
