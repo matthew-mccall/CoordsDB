@@ -56,6 +56,9 @@ public class DB {
         } catch (FileNotFoundException e) {
             db = new HashTable<String, String, Coord>();
             e.printStackTrace();
+        } catch (EOFException e) {
+            db = new HashTable<String, String, Coord>();
+            System.out.println("Empty file! created new database!");
         } catch (IOException e) {
             db = new HashTable<String, String, Coord>();
             e.printStackTrace();
