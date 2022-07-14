@@ -1,3 +1,5 @@
+![demo.gif](docs/demo.gif)
+
 # CoordsDB
 A plugin for saving coordinates for the Paper Minecraft Server.
 
