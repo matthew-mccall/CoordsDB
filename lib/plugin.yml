@@ -4,5 +4,5 @@ version: 0.1.0
 description: A plugin for saving coordinates for the Paper Minecraft Server.
 api-version: 1.19
 author: matthew+spigot@mmccall.dev
-website: mmccall.dev
+website: coords.mmccall.dev
 prefix: coordsdb
