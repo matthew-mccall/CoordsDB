@@ -12,7 +12,7 @@ public class Entry {
     }
 
     public static Optional<Entry> fromString(String entry) {
-        Pattern usernamePattern = Pattern.compile("[(\\w{3,16})]|[\\w{1,16}\\*?]:(\\w{0,16})\\*?");
+        Pattern usernamePattern = Pattern.compile("([\\w{3,16}]|[\\w{1,16}\\*?]):(\\w{0,16}\\*?)");
         Matcher usernameMatch = usernamePattern.matcher(entry);
 
         if (usernameMatch.matches()) {
