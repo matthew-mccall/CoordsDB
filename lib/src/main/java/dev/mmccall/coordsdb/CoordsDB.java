@@ -7,8 +7,8 @@ import org.bukkit.Server;
 import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import dev.mmccall.coordsdb.cmd.Get;
-import dev.mmccall.coordsdb.cmd.List;
+import dev.mmccall.coordsdb.cmd.Query;
+import dev.mmccall.coordsdb.cmd.Del;
 import dev.mmccall.coordsdb.cmd.Set;
 
 public class CoordsDB extends JavaPlugin {
@@ -24,8 +24,8 @@ public class CoordsDB extends JavaPlugin {
         DB.load();
 
         commandMap.register("coords", new Set());
-        commandMap.register("coords", new Get());
-        commandMap.register("coords", new List());
+        commandMap.register("coords", new Query());
+        commandMap.register("coords", new Del());
     }
 
     @Override

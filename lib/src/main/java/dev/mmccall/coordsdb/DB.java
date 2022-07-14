@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.Location;
@@ -22,6 +23,35 @@ public class DB {
 
     public static Coord getEntry(Entry entry) {
         return db.get(entry.getUsername(), entry.getLabel());
+    }
+
+    public static ArrayList<DBItem> queryEntries(Entry entry) {
+        ArrayList<DBItem> results = new ArrayList<DBItem>();
+        String username = entry.getUsername();
+        String label = entry.getLabel();
+
+        int usernameWildcardIndex = username.indexOf("*");
+        int labelWildcardIndex = label.indexOf("*");
+
+        final String usernameQuery = usernameWildcardIndex > 0 ? username.substring(0, usernameWildcardIndex)
+                : username;
+        final String labelQuery = labelWildcardIndex > 0
+                ? label.substring(0, labelWildcardIndex)
+                : labelWildcardIndex == 0 ? "*" : label;
+
+        db.forEach((usernameEntry, col) -> {
+            if (usernameEntry.indexOf(usernameQuery) == 0) {
+                col.forEach((labelEntry, coord) -> {
+                    if (labelQuery.equals("*")) {
+                        results.add(new DBItem(new Entry(usernameEntry, labelEntry), coord));
+                    } else if (labelEntry.indexOf(labelQuery) == 0) {
+                        results.add(new DBItem(new Entry(usernameEntry, labelEntry), coord));
+                    }
+                });
+            }
+        });
+
+        return results;
     }
 
     public static boolean setEntry(Entry entry, Location location) {

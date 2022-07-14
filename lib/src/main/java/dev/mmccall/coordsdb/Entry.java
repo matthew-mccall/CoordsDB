@@ -12,7 +12,7 @@ public class Entry {
     }
 
     public static Optional<Entry> fromString(String entry) {
-        Pattern usernamePattern = Pattern.compile("(\\w{3,16}):(\\w{3,16})");
+        Pattern usernamePattern = Pattern.compile("[(\\w{3,16})]|[\\w{1,16}\\*?]:(\\w{0,16})\\*?");
         Matcher usernameMatch = usernamePattern.matcher(entry);
 
         if (usernameMatch.matches()) {
@@ -22,8 +22,12 @@ public class Entry {
         return Optional.empty();
     }
 
-    public static boolean isUsernameOrLabel(String entry) {
-        return Pattern.compile("\\w{3,16}").matcher(entry).matches();
+    public static boolean isUsername(String entry) {
+        return Pattern.compile("\\w{3,16}\\*?").matcher(entry).matches();
+    }
+
+    public static boolean isLabel(String entry) {
+        return Pattern.compile("\\w{0,16}\\*?").matcher(entry).matches();
     }
 
     @Override

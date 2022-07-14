@@ -37,7 +37,7 @@ public class Del extends Command {
 
         if (optionalEntry.isPresent()) {
             entry = optionalEntry.get();
-        } else if (Entry.isUsernameOrLabel(args[0])) {
+        } else if (Entry.isLabel(args[0])) {
             entry = new Entry(sender.getName(), args[0]);
         } else {
             sender.sendMessage("[CoordsDB] invalid label! Usage: " + getUsage());
