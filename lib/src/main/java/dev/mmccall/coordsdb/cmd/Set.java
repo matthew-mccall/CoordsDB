@@ -5,44 +5,44 @@ import java.util.ArrayList;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import dev.mmccall.coordsdb.DB;
 import dev.mmccall.coordsdb.Entry;
 
-public class Set extends Command {
-
-    public Set() {
-        super("set");
-
-        setDescription("Sets and stores your current coordinate location with an optional label");
-        setUsage("/coords:set <label>");
-
-        ArrayList<String> aliases = new ArrayList<String>();
-        aliases.add("add");
-
-        setAliases(aliases);
-    }
+public class Set implements CommandExecutor {
 
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String commandLabel,
+            @NotNull String[] args) {
 
+        if (!(sender instanceof Player)) {
+            return false;
+        }
+
+        Player player = (Player) sender;
         String username;
         String label;
         Location location;
         Entry entry;
 
-        username = sender.getName();
+        username = player.getName();
 
         if (args.length > 0) {
+            if (!Entry.isLabel(args[0])) {
+                sender.sendMessage("[CoordsDB] Invalid label!");
+                return false;
+            }
             label = args[0];
         } else {
             label = String.valueOf(DB.getEntries(username).size());
         }
 
         entry = new Entry(username, label);
-        location = sender.getServer().getPlayer(username).getLocation();
+        location = player.getLocation();
 
         if (DB.setEntry(new Entry(username, label), location)) {
             sender.sendMessage(MessageFormat.format(
@@ -55,6 +55,7 @@ public class Set extends Command {
                     location.getBlockX(), location.getBlockY(), location.getBlockZ(), entry));
             return false;
         }
+
     }
 
 }

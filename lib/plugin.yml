@@ -1,8 +1,20 @@
 name: CoordsDB
 main: dev.mmccall.coordsdb.CoordsDB
-version: 0.1.0
+version: 0.2.1
 description: A plugin for saving coordinates for the Paper Minecraft Server.
 api-version: 1.19
 author: matthew+spigot@mmccall.dev
 website: coords.mmccall.dev
-prefix: coordsdb
+prefix: coords
+commands:
+  set:
+    descripton: Sets and stores your current coordinate location with an optional label
+    usage: "Usage: /coords:set|add <label>"
+    aliases: add
+  query:
+    description: Gets the coordinate location with the specified label.
+    usage: "Usage: /coords:query <label>"
+  del:
+    description: Deletes the coordinate location with the specified label.
+    usage: "Usage: /coords:del|rm <label>"
+    aliases: rm

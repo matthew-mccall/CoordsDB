@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,17 +14,11 @@ import dev.mmccall.coordsdb.DB;
 import dev.mmccall.coordsdb.DBItem;
 import dev.mmccall.coordsdb.Entry;
 
-public class Query extends Command {
-
-    public Query() {
-        super("query");
-
-        setDescription("Gets the coordinate location with the specified label");
-        setUsage("/coords:query <label>");
-    }
-
+public class Query implements CommandExecutor {
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
+            @NotNull String[] args) {
+
         Entry entry;
 
         if (args.length > 0) {
@@ -56,6 +51,7 @@ public class Query extends Command {
         });
 
         return true;
+
     }
 
 }

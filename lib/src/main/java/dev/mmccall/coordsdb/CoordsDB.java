@@ -3,8 +3,6 @@
  */
 package dev.mmccall.coordsdb;
 
-import org.bukkit.Server;
-import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import dev.mmccall.coordsdb.cmd.Query;
@@ -13,19 +11,13 @@ import dev.mmccall.coordsdb.cmd.Set;
 
 public class CoordsDB extends JavaPlugin {
 
-    Server server;
-    CommandMap commandMap;
-
     @Override
     public void onEnable() {
-        server = this.getServer();
-        commandMap = server.getCommandMap();
-
         DB.load();
 
-        commandMap.register("coords", new Set());
-        commandMap.register("coords", new Query());
-        commandMap.register("coords", new Del());
+        this.getCommand("set").setExecutor(new Set());
+        this.getCommand("query").setExecutor(new Query());
+        this.getCommand("del").setExecutor(new Del());
     }
 
     @Override

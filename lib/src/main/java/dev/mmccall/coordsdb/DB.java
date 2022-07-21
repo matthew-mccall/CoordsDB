@@ -10,12 +10,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.bukkit.Location;
 
 public class DB {
+    private static Logger logger;
     private static HashTable<String, String, Coord> db;
     private static final String SAVEFILE = "coords.db";
+
+    public static void setLogger(Logger logger) {
+        DB.logger = logger;
+    }
 
     public static HashMap<String, Coord> getEntries(String username) {
         return db.getOrCreateCol(username);
@@ -88,7 +94,7 @@ public class DB {
             e.printStackTrace();
         } catch (EOFException e) {
             db = new HashTable<String, String, Coord>();
-            System.out.println("Empty file! created new database!");
+            logger.info("Empty file! created new database!");
         } catch (IOException e) {
             db = new HashTable<String, String, Coord>();
             e.printStackTrace();
