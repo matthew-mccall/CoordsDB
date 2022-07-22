@@ -1,0 +1,6 @@
+# Entries
+
+Coordinates in CoordsDB are identified using entries. The entries are identified with the following syntax: `foo:bar`. Where `foo` is the username, and `bar` is the label of the coordinates. Username must be a valid [Minecraft username](https://help.minecraft.net/hc/en-us/articles/4408950195341-Minecraft-Java-Edition-Username-VS-Gamertag-FAQ), i.e., it must have 3-16 characters without spaces. Allowed characters include A-Z, a-z, 0-9, and _ (underscore). Labels follow the same rules.
+
+## Wildcards
+CoordsDB supports the querying of labels through wildcards. The wildcard functions very similarily to Unix shells such as Bash, Zsh, etc. A wildcard may be denoted with an asterisk `*`. Wildcards work by querying a label that consists of the characters before and up to the asterisk. For example, suppose we have two labels, `fizz:buzz` and `fizz:buzzbuzz`. An entry of `fizz:buzz*` would match both `fizz:buzz` and `fizz:buzzbuzz`. Conversely,  An entry of `fizz:buzzb*` would `fizz:buzzbuzz` only. Wildcards may also be applied to usernames. Please note you must specify a minimum of three characters for the username regardless of whether you use a wildcard. `bob*:home` is valid whereas `*:*` is not. Although `alice:*` is valid and queries all the coordinates for user, `alice`. 

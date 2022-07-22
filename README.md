@@ -12,32 +12,32 @@ That is why I created this plugin.
 - 1.19 Spigot Minecraft Server
 
 ## How to use
-### `/coords:set <label>` 
+### Set 
 Sets and stores your current coordinate location with an optional label. 
 #### Example
 `/coords:set home` 
 
-### `/coords:get` 
+### Query
 Gets all your coordinates.
 #### Example
 `/coords:get` 
 
-### `/coords:get <label>` 
+### Query with Entry
 Gets with coordinate with the label.
 #### Example
 `/coords:get end_portal` 
 
-### `/coords:get <prefix>*` 
+### Query with Entry Wildcard
 Gets all your coordinates whose label begin with the prefix.
 #### Example
 `/coords:get i*` 
 
-### `/coords:get <player>:<label>` 
+### Query another player's coordinates
 Gets with coordinate with the label that belogs to that player.
 #### Example
 `/coords:get foo:bar` 
 
-### `/coords:del <label>` 
+### Delete
 Deletes the coordinate location with the specified label.
 #### Example
 `/coords:del spawn` 

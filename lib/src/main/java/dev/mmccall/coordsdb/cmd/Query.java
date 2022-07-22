@@ -28,7 +28,7 @@ public class Query implements CommandExecutor {
             } else if (Entry.isLabel(args[0])) {
                 entry = new Entry(sender.getName(), args[0]);
             } else {
-                sender.sendMessage("[CoordsDB] Bad label specified!");
+                sender.sendMessage("[CoordsDB] Bad label or entry specified!");
                 return false;
             }
         } else {

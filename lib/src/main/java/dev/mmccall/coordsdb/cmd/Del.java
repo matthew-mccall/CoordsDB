@@ -1,12 +1,12 @@
 package dev.mmccall.coordsdb.cmd;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Optional;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import dev.mmccall.coordsdb.DB;
@@ -17,6 +17,10 @@ public class Del implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
             @NotNull String[] args) {
+
+        if (!(sender instanceof Player)) {
+            return false;
+        }
 
         if (args.length < 1) {
             sender.sendMessage("[CoordsDB] label not specified!");
@@ -32,6 +36,11 @@ public class Del implements CommandExecutor {
             entry = new Entry(sender.getName(), args[0]);
         } else {
             sender.sendMessage("[CoordsDB] invalid label!");
+            return false;
+        }
+
+        if (!entry.getUsername().equals(sender.getName())) {
+            sender.sendMessage("[CoordsDB] You cannot delete someone else's coordinates!");
             return false;
         }
 
