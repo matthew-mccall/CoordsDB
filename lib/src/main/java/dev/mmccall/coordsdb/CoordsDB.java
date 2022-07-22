@@ -8,6 +8,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import dev.mmccall.coordsdb.cmd.Query;
 import dev.mmccall.coordsdb.cmd.Del;
 import dev.mmccall.coordsdb.cmd.Set;
+import dev.mmccall.coordsdb.completers.DelCompleter;
+import dev.mmccall.coordsdb.completers.QueryCompleter;
 
 public class CoordsDB extends JavaPlugin {
 
@@ -18,6 +20,9 @@ public class CoordsDB extends JavaPlugin {
         this.getCommand("set").setExecutor(new Set());
         this.getCommand("query").setExecutor(new Query());
         this.getCommand("del").setExecutor(new Del());
+
+        this.getCommand("query").setTabCompleter(new QueryCompleter());
+        this.getCommand("del").setTabCompleter(new DelCompleter());
     }
 
     @Override

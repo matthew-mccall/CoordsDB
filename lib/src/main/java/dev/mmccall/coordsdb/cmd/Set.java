@@ -1,7 +1,6 @@
 package dev.mmccall.coordsdb.cmd;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
