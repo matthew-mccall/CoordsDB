@@ -56,8 +56,6 @@ public class QueryCompleter implements TabCompleter {
             completions.add(result.getEntry().toString());
         });
 
-        completions.add((new Entry(sender.getName(), args[0] + "*")).toString());
-
         return completions;
     }
 
